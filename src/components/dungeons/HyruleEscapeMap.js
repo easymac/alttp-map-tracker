@@ -1,26 +1,28 @@
+/* eslint-disable no-undef */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Overlay from './Overlay';
-import LootMarker from './LootMarker';
-import * as actions from '../actions/mapActions';
+import Overlay from '../Overlay';
+import LootMarker from '../LootMarker';
+import * as actions from '../../actions/mapActions';
 
-class OverworldMap extends React.Component {
+class HyruleEscapeMap extends React.Component {
   constructor(props, context) {
     super(props, context);
-
-    this.google = props.google;
+    this.props = props;
 
     this.state = {
       overlays: []
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.getProps = this.getProps.bind(this);
     this.initMap = this.initMap.bind(this);
     this.addMarkers = this.addMarkers.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleMapIdChange = this.handleMapIdChange.bind(this);
+
+    this.createMapType = this.createMapType.bind(this);
   }
 
   componentDidMount() {
@@ -33,46 +35,49 @@ class OverworldMap extends React.Component {
 
   handleClick(e) {
     // Output coords on click
-    console.log(e.latLng.lat().toFixed(4) +', '+ e.latLng.lng().toFixed(4)); // eslint-disable-line
-  }
-
-  getProps() {
-    return {
-      tracker: this.props.tracker
-    };
-  }
-
-  setPanBounds(map) {
-    const allowedBounds = new this.google.maps.LatLngBounds(
-      new this.google.maps.LatLng(-0, -179),
-      new this.google.maps.LatLng(85, 0)
-    );
-
-    this.props.setPanBounds(map, allowedBounds);
+    console.log(e.latLng.lat().toFixed(4) +', '+ e.latLng.lng().toFixed(4));
   }
 
   initMap(props) {
-    const map = this.map = new props.google.maps.Map(document.getElementById('google-map'), {
+    const map = this.map = new props.google.maps.Map(document.getElementByid('google-map'), {
       center: {lat: 70, lng: -90},
       zoom: props.zoomBuffer + 2,
       streetViewControl: false,
-      mapTypeControlOptions: {
-        mapTypeIds: ['lightworld', 'darkworld']
+      mapControlOptions: {
+        mapTypeIds: ['2F']
       }
     });
 
     map.addListener('click', this.handleClick);
     map.addListener('maptypeid_changed', this.handleMapIdChange.bind(this, map));
 
-    const lightWorld = props.createMapType('lightworld', 'Light World', [4, 8, 16, 32]);
-    const darkWorld = props.createMapType('darkworld', 'Dark World', [4, 8, 16, 32]);
+    const floor2F = props.createMapType('2F', '2F', [4, 8, 16, 32]);
 
-    map.mapTypes.set('lightworld', lightWorld);
-    map.mapTypes.set('darkworld', darkWorld);
+    mapTypes.set('2F', floor2F);
     map.setMapTypeId('lightworld');
 
-    this.setPanBounds(map);
+    this.props.setPanBounds(map);
     this.addMarkers();
+  }
+
+  getNormalizedCoord(coord, zoom) {
+    const sizeByZoom = [
+      // [w, h]
+      [3, 6],
+      [6, 12],
+      [12, 24],
+    ]
+  }
+
+  createMapType() {
+    return new this.google.maps.ImageMapType({
+      getTileUrl: (coord, zoom) => {
+        const nCoord = this.getNormalizedCoord(coord, zoom);
+        if (!nCoord) return null;
+        // y-x
+        return `/dungeons/hyruleescape/${zoom - zoomBuffer}/${nCoord.y}-${nCoord.x}`;
+      }
+    });
   }
 
   addMarkers() {
@@ -86,13 +91,18 @@ class OverworldMap extends React.Component {
         <LootMarker
           data={data}
           lootIndex={i}
-          getProps={this.getProps}
           tracker={this.props.tracker}
           store={this.props.route.store}
         />
       </Overlay>
     ));
     this.setState({overlays});
+  }
+
+  getRealTilesByZoom(zoom) {
+    return {
+
+    }[zoom];
   }
 
   render() {
@@ -104,11 +114,3 @@ class OverworldMap extends React.Component {
     );
   }
 }
-
-export default connect(
-  state => ({
-    map: state.map,
-    tracker: state.itemTracker,
-  }),
-  dispatch => ({actions: bindActionCreators(actions, dispatch)})
-)(OverworldMap);

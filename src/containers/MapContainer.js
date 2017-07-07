@@ -27,6 +27,7 @@ class MapContainer extends React.Component {
     });
 
     this.createMapType = this.createMapType.bind(this);
+    this.setPanBounds = this.setPanBounds.bind(this);
   }
 
   createMapType(id, name, sizeByZoom) {
@@ -45,6 +46,42 @@ class MapContainer extends React.Component {
     });
   }
 
+  /*
+   * Restrict panning to the map region
+   * @param map the Google Maps map object
+   * @param allowedBounds a google.maps.LatLngBounds object
+   */
+  setPanBounds(map, allowedBounds) {
+    const boundLimits = {
+        maxLat: allowedBounds.getNorthEast().lat(),
+        maxLng: allowedBounds.getNorthEast().lng(),
+        minLat: allowedBounds.getSouthWest().lat(),
+        minLng: allowedBounds.getSouthWest().lng()
+    };
+
+    let lastValidCenter = map.getCenter();
+
+    this.google.maps.event.addListener(map, 'center_changed', () => {
+      const center = map.getCenter();
+      if (allowedBounds.contains(center)) {
+        lastValidCenter = map.getCenter();
+        return;
+      }
+
+      let newLat = lastValidCenter.lat();
+      let newLng = lastValidCenter.lng();
+
+      if (center.lng() > boundLimits.minLng && center.lng() < boundLimits.maxLng) {
+        newLng = center.lng();
+      }
+      if (center.lat() > boundLimits.minLat && center.lat() < boundLimits.maxLat) {
+        newLat = center.lat();
+      }
+
+      map.panTo(new this.google.maps.LatLng(newLat, newLng));
+    });
+  }
+
   render() {
     if (!this.state.loaded) {
       return (
@@ -59,6 +96,7 @@ class MapContainer extends React.Component {
         google: this.google,
         createMapType: this.createMapType,
         zoomBuffer: zoomBuffer,
+        setPanBounds: this.setPanBounds,
       })
     );
 
