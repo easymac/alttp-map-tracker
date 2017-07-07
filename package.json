@@ -29,6 +29,7 @@
   "author": "easymac",
   "license": "MIT",
   "dependencies": {
+    "google-maps": "3.2.1",
     "object-assign": "4.1.0",
     "react": "15.5.4",
     "react-dom": "15.5.4",
