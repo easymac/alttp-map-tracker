@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Image from './Image';
 
 class TrackerItem extends React.Component {
   constructor(props, context) {
@@ -24,7 +24,7 @@ class TrackerItem extends React.Component {
     if (item.equipped) classes = item.id +' '+ 'item equipped';
     return (
       <div className={classes} onClick={this.handleClick} onContextMenu={this.handleRightClick}>
-        <img className="icon" src={iconUrl} draggable="false" />
+        <Image className="icon" src={iconUrl} draggable="false" />
       </div>
     );
   }

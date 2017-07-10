@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from './Image';
 
 import ChestCounter from './ChestCounter';
 import Requirements from './Requirements';
@@ -92,7 +93,7 @@ class LootRow extends React.Component {
       );
     }
     if (this.props.type == 'warp') {
-      icon = <img className="icon" src={`/icons/warp.png`} />;
+      icon = <Image className="icon" src={`/icons/warp.png`} />;
     }
     return icon;
   }

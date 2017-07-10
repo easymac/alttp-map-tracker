@@ -7,6 +7,8 @@ import TrackerUpgradeable from './TrackerUpgradeable';
 import Timer from './Timer';
 import * as actions from '../actions/itemTrackerActions';
 
+import Image from './Image';
+
 class Tracker extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -56,7 +58,7 @@ class Tracker extends React.Component {
     return (
       <div id="tracker">
         <div className="logo" onClick={this.logoClickTest}>
-          <img src={`/logo.png`} />
+          <Image src={`/logo.png`} />
         </div>
         <div id="item-tracker">
           {active}

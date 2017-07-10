@@ -1,10 +1,10 @@
 import React from 'react';
-
+import Image from './Image';
 
 const HomePage = () => {
   return (
     <div className="home-page">
-      <img className="logo" src={`/logo.png`} />
+      <Image className="logo" src={`/logo.png`} />
       <h1>Randomizer Map Tracker<span className="beta">Beta</span></h1>
       <h2>for The Legend of Zelda: A Link to the Past</h2>
       <span className="version">0.1.0</span>

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Image from './Image';
 
 class ChestCounter extends React.Component {
   constructor(props, context) {
@@ -81,7 +81,7 @@ class ChestCounter extends React.Component {
 
   numToImages(num) {
     return num.toString().split('').map((char, i) => (
-      <img key={i} src={`/icons/${char}.png`} />
+      <Image key={i} src={`/icons/${char}.png`} />
     ));
   }
 
@@ -93,7 +93,7 @@ class ChestCounter extends React.Component {
       const iconURL = `/icons/chest-${count}-open-${open}.png`;
       return (
         <div className="chest-counter" onClick={this.handleClick} ref={ref => this.el = ref}>
-          <img className="icon" src={iconURL} ref={ref => this.imgEl = ref}/>
+          <Image className="icon" src={iconURL} ref={ref => this.imgEl = ref}/>
         </div>
       );
     }
@@ -103,7 +103,7 @@ class ChestCounter extends React.Component {
     const openEl = (count != open) ? <div className="open">{this.numToImages(count - open)}</div> : '';
     return (
       <div className="chest-counter" onClick={this.handleClick} ref={ref => this.el = ref}>
-        <img className="icon" src={chestURL} ref={ref => this.imgEl = ref}/>
+        <Image className="icon" src={chestURL} ref={ref => this.imgEl = ref}/>
         {countEl}
         {openEl}
       </div>

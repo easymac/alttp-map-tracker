@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Image from './Image';
 
 class TrackerUpgradeable extends React.Component {
   constructor(props, context) {
@@ -27,7 +27,7 @@ class TrackerUpgradeable extends React.Component {
 
     return (
       <div className={classes} onClick={this.handleClick} onContextMenu={this.handleRightClick}>
-        <img className="icon" src={iconUrl} draggable="false" />
+        <Image className="icon" src={iconUrl} draggable="false" />
       </div>
     );
   }

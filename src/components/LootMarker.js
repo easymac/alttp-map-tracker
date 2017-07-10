@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from './Image';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -78,12 +79,12 @@ class LootMarker extends React.Component {
     const classes = (requirementMet) ? 'icon equipped' : 'icon unequipped';
     // is a basic item
     if (typeof requirement === 'string') {
-      return <img className={classes} src={`/icons/${requirement}.png`} />;
+      return <Image className={classes} src={`/icons/${requirement}.png`} />;
     } else {
       // is an upgradeable item
       const item = this.props.tracker.upgradeables.find(item => item.id == requirement.id);
       if (typeof item !== 'undefined') {
-        return <img className={classes} src={`/icons/${item.icons[requirement.value]}.png`} />;
+        return <Image className={classes} src={`/icons/${item.icons[requirement.value]}.png`} />;
       }
     }
   }

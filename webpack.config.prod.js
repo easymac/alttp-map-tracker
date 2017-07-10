@@ -25,6 +25,9 @@ export default {
     filename: '[name].[chunkhash].js'
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'IMAGE_URL': JSON.stringify(''),
+    }),
     // Hash the files using MD5 so that their names change when the content changes.
     new WebpackMd5Hash(),
 

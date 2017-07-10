@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Image from './Image';
 
 class Timer extends React.Component {
   constructor(props, context) {
@@ -67,7 +67,7 @@ class Timer extends React.Component {
     const timeImages = [...this.state.timeString].map((char, i) => {
       const name = (char == ':') ? 'colon' : char;
       return (
-        <img
+        <Image
           className="time-char"
           src={`/icons/${name}.png`}
           key={i}

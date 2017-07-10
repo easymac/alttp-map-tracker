@@ -35,7 +35,8 @@ class MapContainer extends React.Component {
         const nCoord = getNormalizedCoord(coord, zoom, sizeByZoom);
         if (!nCoord) return null;
         // y-x
-        return `/${id}/${zoom - zoomBuffer}/${nCoord.y}-${nCoord.x}.png`;
+        const imgUrl = IMAGE_URL; // eslint-disable-line
+        return `${imgUrl}/${id}/${zoom - zoomBuffer}/${nCoord.y}-${nCoord.x}.png`;
       },
       tileSize: new this.google.maps.Size(256, 256),
       maxZoom: zoomBuffer + sizeByZoom.length - 1,

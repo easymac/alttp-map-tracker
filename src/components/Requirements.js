@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from './Image';
 
 import RequirementAnd from './RequirementAnd';
 
@@ -10,11 +11,11 @@ class Requirements extends React.Component {
 
   getIcon(requirement) {
     if (typeof requirement === 'string') {
-      return <img className="icon" src={`/icons/${requirement}.png`} />;
+      return <Image className="icon" src={`/icons/${requirement}.png`} />;
     } else {
       const item = this.props.tracker.upgradeables.find(i => i.id == requirement.id);
       if (typeof item !== 'undefined') {
-        return <img className="icon" src={`/icons/${item.icons[requirement.value]}.png`}  />;
+        return <Image className="icon" src={`/icons/${item.icons[requirement.value]}.png`}  />;
       }
     }
   }

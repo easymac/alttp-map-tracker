@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from './Image';
 
 import { Link } from 'react-router';
 
@@ -13,7 +14,7 @@ const NotFoundPage = () => {
   const location = locations[Math.floor(Math.random() * (locations.length))];
   return (
     <div className="not-found-page">
-      <img src={`/icons/chest-1-open-1.png`} />
+      <Image src={`/icons/chest-1-open-1.png`} />
       <h4>
         404
       </h4>
