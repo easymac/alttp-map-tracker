@@ -22,17 +22,21 @@ const HomePage = () => {
       </p>
       <p>
         Created by easymac. The tracker component is heavily inspired by <a href="https://www.twitch.tv/crossproduct">
-        crossproduct</a>'s tracker. <a href="http://maplequeensaku.weebly.com/news/legend-of-zelda-a-link-to-the-past-randomizer-overworld-item-locations-guide">
-        Sakura Tsubasa's blog</a> was a tremendous help and was my primary
+        crossproduct</a>’s tracker. <a href="http://maplequeensaku.weebly.com/news/legend-of-zelda-a-link-to-the-past-randomizer-overworld-item-locations-guide">
+        Sakura Tsubasa’s blog</a> was a tremendous help and was my primary
         resource for learning item locations. Map images taken from <a href="http://ian-albert.com/games/legend_of_zelda_a_link_to_the_past_maps/">
         ian-albert.com</a>.
       </p>
       <p>
-        I intend to continue development after release. I'll probably mostly
-        talk about development in the #community-dev channel of the Discord.
+        I intend to continue development after release. I’ll probably mostly
+        talk about development in the #community-dev channel of the Discord. My
+        name there is easymac.
       </p>
       <p>
-        I might put this on github eventually.
+        This project is available on <a href="https://github.com/easymac/alttp-map-tracker">
+        GitHub</a>. If you would like to support the project, please feel free
+        to add suggestions and bug reports as issues or contact me directly and
+        definitely feel free to make pull requests.
       </p>
     </div>
   );
