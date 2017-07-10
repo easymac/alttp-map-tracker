@@ -6,12 +6,14 @@ import HomePage from './components/HomePage';
 import NotFoundPage from './components/NotFoundPage';
 import MapContainer from './containers/MapContainer';
 import OverworldMap from './components/OverworldMap';
+import HyruleEscapeMap from './components/dungeons/HyruleEscapeMap';
 
 const routes = (
   <Route path="/" component={App}>
     <IndexRoute component={HomePage}/>
     <Route path="maps" component={MapContainer}>
       <IndexRoute component={OverworldMap} />
+      <Route path="hyrule-escape" component={HyruleEscapeMap} />
     </Route>
     <Route path="*" component={NotFoundPage}/>
   </Route>
@@ -22,6 +24,7 @@ export const getRoutes = (store) => (
     <IndexRoute component={HomePage}/>
     <Route path="maps" component={MapContainer}>
       <IndexRoute store={store} component={OverworldMap} />
+      <Route path="hyrule-escape" component={HyruleEscapeMap} />
     </Route>
     <Route path="*" component={NotFoundPage}/>
   </Route>

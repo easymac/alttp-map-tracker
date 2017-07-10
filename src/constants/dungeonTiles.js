@@ -1,4 +1,4 @@
-export const hyruleEscape = {
+export const hyruleEscapeTiles = {
   '2F': {
     0: [
       [1, 3],
