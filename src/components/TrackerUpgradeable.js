@@ -22,8 +22,8 @@ class TrackerUpgradeable extends React.Component {
     const iconIndex = item.value;
     const iconUrl = `/icons/${item.icons[iconIndex]}.png`;
 
-    let classes = 'item unequipped';
-    if (item.value > 0) classes = 'item equipped';
+    let classes = item.id +' '+ 'item unequipped';
+    if (item.value > 0) classes = item.id +' '+ 'item equipped';
 
     return (
       <div className={classes} onClick={this.handleClick} onContextMenu={this.handleRightClick}>
