@@ -426,8 +426,13 @@ body {
   }
 
   .unequipped .icon, .unequipped.icon {
-    filter: grayscale(100%);
-    opacity: 0.5;
+    filter: grayscale(85%);
+    opacity: 0.25;
+  }
+  .item.greenpendant {
+    transform: scaleX(-1);
+    margin-right: 4px;
+    margin-left: -4px;
   }
 }
 
@@ -633,6 +638,11 @@ body {
     }
   }
   #tracker {
+
+    .item.greenpendant {
+      margin-right: 2px;
+      margin-left: -2px;
+    }
 
     .crystals .item {
       position: relative;
