@@ -58,18 +58,19 @@ class HyruleEscapeMap extends React.Component {
       center: {lat: 70, lng: -90},
       zoom: props.zoomBuffer + 2,
       streetViewControl: false,
-      mapControlOptions: {
-        mapTypeIds: ['2F']
+      mapTypeControlOptions: {
+        mapTypeIds: ['floor1F', 'floor2F']
       }
     });
 
     map.addListener('click', this.handleClick);
     map.addListener('maptypeid_changed', this.handleMapIdChange.bind(this, map));
 
-    const floor2F = this.createMapType();
-    console.log(floor2F);
-    map.mapTypes.set('2F', floor2F);
-    map.setMapTypeId('2F');
+    const floor1F = this.createMapType('1F');
+    const floor2F = this.createMapType('2F');
+    map.mapTypes.set('floor1F', floor1F);
+    map.mapTypes.set('floor2F', floor2F);
+    map.setMapTypeId('floor2F');
 
     const allowedBounds = new this.google.maps.LatLngBounds(
       new this.google.maps.LatLng(-0, -179),
@@ -80,30 +81,27 @@ class HyruleEscapeMap extends React.Component {
     this.addMarkers();
   }
 
-  getNormalizedCoord(coord, zoom) {
-    console.log(coord);
-    console.log(hyruleEscapeTiles['2F'][zoom - zoomBuffer])
-    const coordArr = hyruleEscapeTiles['2F'][zoom - zoomBuffer].find(a => a[0] == coord.x && a[1] == coord.y);
+  getNormalizedCoord(floor, coord, zoom) {
+    const coordArr = hyruleEscapeTiles[floor][zoom - zoomBuffer].find(a => a[0] == coord.x && a[1] == coord.y);
     if (coordArr)
       return {x: coordArr[0], y: coordArr[1]}
     else
       return false
   }
 
-  createMapType() {
+  createMapType(floor) {
     return new this.google.maps.ImageMapType({
       getTileUrl: (coord, zoom) => {
-        const nCoord = this.getNormalizedCoord(coord, zoom);
-        console.log(nCoord);
-        if (!nCoord) return null;
+        const imgUrl = IMAGE_URL; // eslint-disable-line
+        const nCoord = this.getNormalizedCoord(floor, coord, zoom);
+        if (!nCoord) return `${imgUrl}/dungeons/hyruleescape/${floor}/${zoom - zoomBuffer}/base.png`;
         // y-x
-        console.log(nCoord, (zoom - zoomBuffer));
-        return `/dungeons/hyruleescape/2F/${zoom - zoomBuffer}/${nCoord.y}-${nCoord.x}.png`;
+        return `${imgUrl}/dungeons/hyruleescape/${floor}/${zoom - zoomBuffer}/${nCoord.y}-${nCoord.x}.png`;
       },
       tileSize: new this.google.maps.Size(256, 256),
       maxZoom: zoomBuffer + 3 - 1,
       minZoom: zoomBuffer,
-      name: 'Hyrule Map Escape'
+      name: `${floor}`
     });
   }
 
