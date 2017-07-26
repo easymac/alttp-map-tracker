@@ -6,6 +6,7 @@ import HomePage from './components/HomePage';
 import NotFoundPage from './components/NotFoundPage';
 import MapContainer from './containers/MapContainer';
 import OverworldMap from './components/OverworldMap';
+import NuOverworldMap from './components/NuOverworldMap';
 import HyruleEscapeMap from './components/dungeons/HyruleEscapeMap';
 import AgaTowerMap from './components/dungeons/AgaTowerMap';
 import IcePalaceMap from './components/dungeons/IcePalaceMap';
@@ -24,7 +25,7 @@ const routes = (
   <Route path="/" component={App}>
     <IndexRoute component={HomePage}/>
     <Route path="maps" component={MapContainer}>
-      <IndexRoute component={OverworldMap} />
+      <IndexRoute component={NuOverworldMap} />
       <Route path="hyrule-escape" component={HyruleEscapeMap} />
       <Route path="aga-tower" component={AgaTowerMap} />
       <Route path="ice-palace" component={IcePalaceMap} />
@@ -47,7 +48,7 @@ export const getRoutes = (store) => (
   <Route path="/" component={App}>
     <IndexRoute component={HomePage}/>
     <Route path="maps" component={MapContainer}>
-      <IndexRoute store={store} component={OverworldMap} />
+      <IndexRoute store={store} component={NuOverworldMap} />
       <Route path="hyrule-escape" component={HyruleEscapeMap} />
       <Route path="aga-tower" component={AgaTowerMap} />
       <Route path="ice-palace" component={IcePalaceMap} />

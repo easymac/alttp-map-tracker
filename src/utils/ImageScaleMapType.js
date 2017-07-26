@@ -1,5 +1,5 @@
 export default class ImageScaleMapType {
-  constructor(image, base, tileSize, maxZoom, minZoom, name) {
+  constructor(image, base, tileSize, maxZoom, minZoom, name, scaleFactor) {
     this.image = image;
     this.base = base;
     this.tileSize = tileSize;
@@ -7,7 +7,7 @@ export default class ImageScaleMapType {
     this.minZoom = minZoom;
     this.name = name;
 
-    this.scaleFactor = {
+    this.scaleFactor = scaleFactor || {
       0: 0.5,
       1: 1,
       2: 2
@@ -19,17 +19,19 @@ export default class ImageScaleMapType {
     this.canvas.height = image.height;
     this.context = this.canvas.getContext('2d');
     // Replace transparent tiles with base texture
-    this.paintBaseLayer(this.canvas, this.context);
+    if (base) this.paintBaseLayer(this.canvas, this.context);
     // Paint the floor image
     this.context.drawImage(image, 0, 0);
 
-    // Store the base texture in a canvas
-    this.baseCanvas = document.createElement('canvas');
-    // Make the canvas as wide as the widest tile can be
-    this.baseCanvas.width = tileSize.width / this.scaleFactor[minZoom];
-    this.baseCanvas.height = tileSize.height / this.scaleFactor[minZoom];
-    this.baseContext = this.baseCanvas.getContext('2d');
-    this.paintBaseLayer(this.baseCanvas, this.baseContext);
+    if (base) {
+      // Store the base texture in a canvas
+      this.baseCanvas = document.createElement('canvas');
+      // Make the canvas as wide as the widest tile can be
+      this.baseCanvas.width = tileSize.width / this.scaleFactor[minZoom];
+      this.baseCanvas.height = tileSize.height / this.scaleFactor[minZoom];
+      this.baseContext = this.baseCanvas.getContext('2d');
+      this.paintBaseLayer(this.baseCanvas, this.baseContext);
+    }
   }
 
   paintBaseLayer(canvas, context) {
@@ -47,10 +49,13 @@ export default class ImageScaleMapType {
     const offsetY = tileCoord.y * tileSize;
 
     if (
-         (offsetX < 0 || offsetX >= this.canvas.width)
-      || (offsetY < 0 || offsetY >= this.canvas.height)
-    ) return this.baseContext.getImageData(0, 0, tileSize, tileSize);
-
+         offsetX < 0 || offsetX >= this.canvas.width
+      || offsetY < 0 || offsetY >= this.canvas.height
+    ) {
+      if (typeof this.base !== 'undefined') {
+        return this.baseContext.getImageData(0, 0, tileSize, tileSize);
+      }
+    }
     return this.context.getImageData(offsetX, offsetY, tileSize, tileSize);
   }
 
