@@ -43,62 +43,40 @@ export default class ImageScaleMapType {
     }
   }
 
-  cropImage(tileCoord, zoom) {
-    const tileSize = this.tileSize.width / this.scaleFactor[zoom];
-    const offsetX = tileCoord.x * tileSize;
-    const offsetY = tileCoord.y * tileSize;
+  generateTile(tileCoord, zoom) {
+    const tileArea = this.tileSize.width / this.scaleFactor[zoom];
+    const offsetX = tileCoord.x * tileArea;
+    const offsetY = tileCoord.y * tileArea;
 
+    const resCanvas = document.createElement('canvas');
+    resCanvas.width = this.tileSize.width;
+    resCanvas.height = this.tileSize.height;
+    const resContext = resCanvas.getContext('2d');
+    resContext.imageSmoothingEnabled = false;
+
+    // If painting out of bounds
     if (
-         offsetX < 0 || offsetX >= this.canvas.width
-      || offsetY < 0 || offsetY >= this.canvas.height
+      (offsetX < 0 || offsetY < 0) ||
+      (offsetX >= this.canvas.width || offsetY >= this.canvas.height)
     ) {
-      if (typeof this.base !== 'undefined') {
-        return this.baseContext.getImageData(0, 0, tileSize, tileSize);
+      // If Map Type is supplied a base image
+      if (this.base) {
+        resContext.drawImage(
+          this.baseCanvas, 0, 0, tileArea, tileArea,
+          0, 0, resCanvas.width, resCanvas.height
+        );
       }
+    } else {
+      resContext.drawImage(
+        this.canvas, offsetX, offsetY, tileArea, tileArea,
+        0, 0, resCanvas.width, resCanvas.height
+      );
     }
-    return this.context.getImageData(offsetX, offsetY, tileSize, tileSize);
-  }
 
-  scaleImageData(imageData, zoom) {
-
-    const scaleFactor = this.scaleFactor[zoom];
-
-    // Put the image data on a canvas so it can be
-    // drawn on destCanvas using drawImage
-    const canvas = document.createElement('canvas');
-    canvas.width = imageData.width;
-    canvas.height = imageData.width;
-    const context = canvas.getContext('2d');
-    context.putImageData(imageData, 0, 0);
-
-    // Add an additional canvas and set the scale before
-    // using drawImage
-    const destCanvas = document.createElement('canvas');
-    destCanvas.width = imageData.width * scaleFactor;
-    destCanvas.height = imageData.height * scaleFactor;
-    const destContext = destCanvas.getContext('2d');
-    destContext.imageSmoothingEnabled = false;
-    destContext.scale(scaleFactor, scaleFactor);
-    destContext.drawImage(canvas, 0, 0);
-
-    return destContext.getImageData(0, 0, destCanvas.width, destCanvas.height);
-  }
-
-  imageDataToURL(imageData) {
-    const canvas = document.createElement('canvas');
-    canvas.width = imageData.width;
-    canvas.height = imageData.height;
-    const context = canvas.getContext('2d');
-    context.putImageData(imageData, 0, 0);
-    return canvas.toDataURL("image/png");
+    return resCanvas;
   }
 
   getTile(tileCoord, zoom) {
-    const img = document.createElement('img');
-    const cropped = this.cropImage(tileCoord, zoom);
-    const scaled = this.scaleImageData(cropped, zoom);
-    const url = this.imageDataToURL(scaled);
-    img.src = url;
-    return img;
+    return this.generateTile(tileCoord, zoom);
   }
 }
