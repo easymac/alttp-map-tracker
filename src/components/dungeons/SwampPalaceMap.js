@@ -73,7 +73,7 @@ export default class SwampPalaceMap extends React.Component {
     });
 
     // Set the default Map Type to the entry floor
-    map.setMapTypeId('B1');
+    map.setMapTypeId('1F');
 
     // Restrict the pan area (should merge with allowedBounds??)
     // this.props.setPanBounds(map, allowedBounds);
