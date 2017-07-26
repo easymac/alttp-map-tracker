@@ -2,12 +2,12 @@ import React from 'react';
 
 import ImageScaleMapType from '../../utils/ImageScaleMapType';
 
-export default class HyruleEscapeMap extends React.Component {
+export default class EasternPalaceMap extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.floors = ['B3', 'B2', 'B1', '1F', '2F'];
-    this.mapName = 'hyrule-escape';
+    this.floors = ['B1', '1F', '2F'];
+    this.mapName = 'eastern-palace';
 
     this.loadImages = this.loadImages.bind(this);
     this.handleMapIdChange = this.handleMapIdChange.bind(this);
@@ -70,13 +70,13 @@ export default class HyruleEscapeMap extends React.Component {
     const base1 = floorImages.pop();
     // Create map types and set them to the map
     this.floors.forEach((floor, index) => {
-      const base = (index > 2) ? base1 : base2;
+      const base = (index > 0) ? base1 : base2;
       const mapType = this.createMapType(floor, floorImages[index], base);
       map.mapTypes.set(floor, mapType);
     });
 
-    // Set the default Map Type to the first floor
-    map.setMapTypeId(this.floors[0]);
+    // Set the default Map Type to the entry floor
+    map.setMapTypeId('1F');
 
     // Restrict the pan area (should merge with allowedBounds??)
     // this.props.setPanBounds(map, allowedBounds);

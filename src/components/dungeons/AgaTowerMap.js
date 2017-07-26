@@ -34,9 +34,9 @@ class AgaTowerMap extends React.Component {
   loadImages() {
     const imgUrl = IMAGE_URL; // eslint-disable-line
     const floorPromises = this.floors.map(floor => {
-      return this.loadImage(`${imgUrl}dungeons/agatower/${floor}.png`);
+      return this.loadImage(`${imgUrl}dungeons/${this.mapName}/${floor}.png`);
     });
-    const basePromise = this.loadImage(`${imgUrl}dungeons/agatower/base.png`);
+    const basePromise = this.loadImage(`${imgUrl}dungeons/${this.mapName}/base.png`);
     return Promise.all([...floorPromises, basePromise]);
   }
 
