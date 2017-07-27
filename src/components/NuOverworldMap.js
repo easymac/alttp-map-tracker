@@ -44,7 +44,7 @@ export default class NuOverworldMap extends React.Component {
     // Initialize the Google map
     const map = this.map = new this.props.google.maps.Map(document.querySelector('#google-map'), {
       center: {lat: 70, lng: -90},
-      zoom: 0,
+      zoom: 3,
       streetViewControl: false,
       mapTypeControlOptions: {
         mapTypeIds: ['lightworld', 'darkworld']
@@ -73,17 +73,17 @@ export default class NuOverworldMap extends React.Component {
 
   createMapType(name, image, base) {
     const scaleFactor = {
-      0: 0.25,
-      1: 0.5,
-      2: 1,
-      3: 2
+      3: 0.25,
+      4: 0.5,
+      5: 1,
+      6: 2
     };
     return new ImageScaleMapType(
       image,
       base,
       new google.maps.Size(256, 256), // eslint-disable-line
+      6,
       3,
-      0,
       name,
       scaleFactor
     );

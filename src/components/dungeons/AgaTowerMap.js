@@ -49,7 +49,7 @@ class AgaTowerMap extends React.Component {
     // Initialize the Google map
     const map = this.map = new this.props.google.maps.Map(document.querySelector('#google-map'), {
       center: {lat: 70, lng: -90},
-      zoom: 0,
+      zoom: 3,
       streetViewControl: false,
       mapTypeControlOptions: {
         mapTypeIds: [...this.floors]
@@ -84,8 +84,8 @@ class AgaTowerMap extends React.Component {
       image,
       base,
       new google.maps.Size(256, 256), // eslint-disable-line
-      2,
-      0,
+      5,
+      3,
       name
     );
   }
