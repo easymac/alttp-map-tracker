@@ -49,8 +49,8 @@ export default class HyruleEscapeMap extends React.Component {
 
     // Initialize the Google map
     const map = this.map = new this.props.google.maps.Map(document.querySelector('#google-map'), {
-      center: {lat: 70, lng: -90},
-      zoom: 3,
+      center: {lat: -55.1035, lng: -112.5},
+      zoom: 4,
       streetViewControl: false,
       mapTypeControlOptions: {
         mapTypeIds: [...this.floors]
@@ -59,8 +59,8 @@ export default class HyruleEscapeMap extends React.Component {
 
     // Set maximum pan area in lat lng
     const allowedBounds = new this.google.maps.LatLngBounds( // eslint-disable-line
-      new this.google.maps.LatLng(-0, -179),
-      new this.google.maps.LatLng(85, 0)
+      new this.google.maps.LatLng(-66.4957, -179),
+      new this.google.maps.LatLng(85, -45.0879)
     );
 
     // Add an event listener for when the Map Type changes
@@ -75,11 +75,11 @@ export default class HyruleEscapeMap extends React.Component {
       map.mapTypes.set(floor, mapType);
     });
 
-    // Set the default Map Type to the first floor
-    map.setMapTypeId(this.floors[0]);
+    // Set the default Map Type to the entry floor
+    map.setMapTypeId('1F');
 
     // Restrict the pan area (should merge with allowedBounds??)
-    // this.props.setPanBounds(map, allowedBounds);
+    this.props.setPanBounds(map, allowedBounds);
   }
 
   createMapType(name, image, base) {
