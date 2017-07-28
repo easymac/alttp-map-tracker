@@ -64,6 +64,7 @@ export default class SkullWoodsMap extends React.Component {
 
     // Add an event listener for when the Map Type changes
     map.addListener('maptypeid_changed', this.handleMapIdChange.bind(this, map));
+    map.addListener('click', e => console.log(e.latLng.lat().toFixed(4) +', '+ e.latLng.lng().toFixed(4))); // eslint-disable-line
 
     const base = floorImages.pop();
     // Create map types and set them to the map
