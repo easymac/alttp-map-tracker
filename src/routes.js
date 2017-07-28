@@ -5,7 +5,7 @@ import App from './components/App';
 import HomePage from './components/HomePage';
 import NotFoundPage from './components/NotFoundPage';
 import MapContainer from './containers/MapContainer';
-import OverworldMap from './components/OverworldMap';
+import OverworldMap from './components/OverworldMap'; // eslint-disable-line
 import NuOverworldMap from './components/NuOverworldMap';
 import HyruleEscapeMap from './components/dungeons/HyruleEscapeMap';
 import AgaTowerMap from './components/dungeons/AgaTowerMap';
