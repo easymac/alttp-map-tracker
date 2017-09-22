@@ -46,6 +46,8 @@ export default class LightWorld extends Region {
       new Location("Hobo", this, [47.7541, -52.2949]),
       new Location("Bombos Tablet", this, [15.3478, -140.6250]),
       new Location("King Zora", this, [82.6398, -7.4268]),
+      new Location("[cave-014] Waterfall of Wishing [left chest]", this, [82.5435, -17.9517]),
+      new Location("[cave 014] Waterfall of Wishing [right chest]", this, [82.5435, -17.9517]),
       new Location("Piece of Heart (Thieves' Forest Hideout)", this, [82.5377, -145.8984]),
       new Location("Piece of Heart (Lumberjack Tree)", this, [83.8346, -125.8374]),
       new Location("Piece of Heart (south of Haunted Grove)", this, [30.6946, -132.1875]),
@@ -226,6 +228,14 @@ export default class LightWorld extends Region {
     );
 
     this.locations.get("Piece of Heart (Zora's River)").setRequirements(
+      ['flippers']
+    );
+
+    this.locations.get("Waterfall of Wishing [left chest]").setRequirements(
+      ['flippers']
+    );
+
+    this.locations.get("Waterfall of Wishing [right chest]").setRequirements(
       ['flippers']
     );
 
