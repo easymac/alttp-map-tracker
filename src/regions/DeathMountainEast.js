@@ -20,6 +20,9 @@ export default class DeathMountainEast extends Region {
       new Location("[cave-009-B1] Death Mountain - wall of caves - right cave [left chest]", this, [80.4047, -24.6094]),
       new Location("[cave-009-B1] Death Mountain - wall of caves - right cave [right chest]", this, [80.4047, -24.6094]),
       new Location("Piece of Heart (Death Mountain - floating island)", this, [84.8756, -34.0796]),
+      // Warps
+      new Location("East Death Mountain Warp", this, [79.9742, -41.1328], 'warp'),
+      new Location("Turtle Rock Warp", this, [84.1497, -10.9204], 'warp'),
     ]);
   }
 
@@ -84,6 +87,20 @@ export default class DeathMountainEast extends Region {
       [
         'mirror',
         'moonpearl',
+        {id: 'gloves', value: 2}
+      ]
+    );
+
+    //Warps
+    this.locations.get("East Death Mountain Warp").setRequirements(
+      [
+        {id: 'gloves', value: 2}
+      ]
+    );
+
+    this.locations.get("Turtle Rock Warp").setRequirements(
+      [
+        'hammer',
         {id: 'gloves', value: 2}
       ]
     );

@@ -3,10 +3,11 @@
  */
 
 export default class Location {
-  constructor(name, region, coords) {
+  constructor(name, region, coords, type='chest') {
     this.name = name;
     this.region = region;
     this.coords = coords;
+    this.type = type;
     this.requirements = [];
   }
 

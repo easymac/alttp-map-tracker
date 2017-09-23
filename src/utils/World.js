@@ -77,11 +77,11 @@ export default class World {
           cloned.push({
             count: 1,
             requires: curr.requirements,
-            type: 'chest'
+            type: curr.type
           });
         }
         return cloned;
-      }, []);
+      }, []); 
       meta.loot = loot;
       return meta;
     });

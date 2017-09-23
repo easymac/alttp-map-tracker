@@ -14,6 +14,9 @@ export default class DeathMountain extends Region {
       new Location("Old Mountain Man", this, [81.2350, -106.8530]),
       new Location("Piece of Heart (Spectacle Rock Cave)", this, [82.3118, -92.1313]),
       new Location("Piece of Heart (Spectacle Rock)", this, [83.5276, -88.2422]),
+      // Warps
+      new Location("Death Mountain Warp", this, [83.4729, -78.4204], 'warp'),
+      
     ]);
   }
 
@@ -56,6 +59,11 @@ export default class DeathMountain extends Region {
 		this.locations.get("Piece of Heart (Spectacle Rock)").setRequirements(
 			['mirror']
 		);
+
+    // Warps
+    this.locations.get("Death Mountain Warp").setRequirements(
+      []
+    );
 
 		return this;
   }

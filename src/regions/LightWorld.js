@@ -63,6 +63,13 @@ export default class LightWorld extends Region {
       new Location("Piece of Heart (Dam)", this, [12.7047, -98.0859]),
       new Location("Piece of Heart (Zora's River)", this, [82.6398, -7.4268]),
       new Location("Haunted Grove item", this, [52.2682, -128.3423]),
+      // Warps
+      new Location("Kakariko Warp", this, [75.8934, -163.4985], 'warp'),
+      new Location("Eastern Palace Warp", this, [45.6601, -4.5923], 'warp'),
+      new Location("Great Swamp Warp", this, [38.3589, -98.0859], 'warp'),
+      new Location("Lake Hylia Warp", this, [23.4431, -36.9360], 'warp'),
+      new Location("Desert Warp", this, [3.6669, -172.6392], 'warp'),
+      new Location("Palace Warp", this, [64.7179, -90.0220], 'warp'),
     ]);
   }
 
@@ -241,6 +248,48 @@ export default class LightWorld extends Region {
 
     this.locations.get("Haunted Grove item").setRequirements(
       ['shovel']
+    );
+
+    // Warps
+    this.locations.get("Kakariko Warp").setRequirements(
+      [
+        [ // or
+          {id: 'gloves', value: 2},
+          'hammer'
+        ]
+      ]
+    );
+
+    this.locations.get("Eastern Palace Warp").setRequirements(
+      [
+        'hammer',
+        {id: 'gloves', value: 1}
+      ]
+    );
+
+    this.locations.get("Great Swamp Warp").setRequirements(
+      [
+        'hammer',
+        {id: 'gloves', value: 1}
+      ]
+    );
+
+    this.locations.get("Lake Hylia Warp").setRequirements(
+      [
+        'flippers',
+        {id: 'gloves', value: 2}
+      ]
+    );
+
+    this.locations.get("Desert Warp").setRequirements(
+      [
+        'flute',
+        {id: 'gloves', value: 2}
+      ]
+    );
+
+    this.locations.get("Palace Warp").setRequirements(
+      ['defeatagahnim']
     );
 
     return this;
