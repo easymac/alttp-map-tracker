@@ -23,7 +23,7 @@ There are a lot of additions I intend to make to this project, some of which are
 
 **Planned upgrades sorted both by how important I think they are and how much I want to do them:**
 
- * Add blue warps and flute locations to the map
+ * ~~Add blue warps and flute locations to the map~~
  * Add additional maps of each dungeon and its contents:
    * *Add overworld markers for the dungeons that show the number of items as well as the prerequisites for both entry and completion. Also allow users to mark Turtle Rock and Misery Mire medallion requirements and integrate that into the logic.*
    * *Since item requisites change based on where small keys are located, the question of how or if useful information beyond item locations can be provided needs to be answered.*
