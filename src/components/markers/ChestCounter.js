@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from './Image';
+import Image from '../Image';
 
 class ChestCounter extends React.Component {
   constructor(props, context) {
@@ -18,8 +18,8 @@ class ChestCounter extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.removeListener(this.dblclickListener);
-    this.props.removeListener(this.rightclickListener);
+    // this.props.removeListener(this.dblclickListener);
+    // this.props.removeListener(this.rightclickListener);
   }
 
   handleDoubleClick(e) {
@@ -54,19 +54,11 @@ class ChestCounter extends React.Component {
     }
   }
 
-
-  // Tell marker if all chests are open or not
-  // (this is not good design in redux)
-  // (however, changing it to right design would)
-  // (require fundamental data changes)
-  // (which is fine but this is easier)
-  // (i just want to change a damn color)
-  // (leave me alone)
   update(open) {
     if (this.props.count == open) {
-      this.props.openAll(this.props.chestIndex);
+      this.props.setStatus('all-open');
     } else {
-      this.props.closeAny(this.props.chestIndex);
+      this.props.setStatus('');
     }
   }
 

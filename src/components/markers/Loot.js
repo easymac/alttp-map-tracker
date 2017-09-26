@@ -1,36 +1,31 @@
 import React from 'react';
-import Image from './Image';
 
 import ChestCounter from './ChestCounter';
 import Requirements from './Requirements';
 
-class LootRow extends React.Component {
+class Loot extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      openedChests: [],
+      status: '',
+      hover: false,
     };
-
-    this.openAll = this.openAll.bind(this);
-    this.closeAny = this.closeAny.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.setStatus = this.setStatus.bind(this);
     this.hasItem = this.hasItem.bind(this);
     this.getIcon = this.getIcon.bind(this);
     this.meetsRequirements = this.meetsRequirements.bind(this);
+    this.meetsRequirementsAnd = this.meetsRequirementsAnd.bind(this);
+    this.meetsRequirementsOr = this.meetsRequirementsOr.bind(this);
   }
 
-  openAll(lootIndex) {
-    if (!this.state.openedChests.find(x => x == lootIndex)) {
-      this.setState({openedChests: [...this.state.openedChests, lootIndex]});
-    }
+  handleMouseEnter() {
+    this.setState({hover: true});
   }
 
-  closeAny(lootIndex) {
-    const i = this.state.openedChests.findIndex(x => x == lootIndex);
-    if (i !== -1) {
-      let newArr = [...this.state.openedChests];
-      newArr.splice(i, 1);
-      this.setState({openedChests: newArr});
-    }
+  handleMouseLeave() {
+    this.setState({hover: false});
   }
 
   hasItem(item) {
@@ -78,46 +73,58 @@ class LootRow extends React.Component {
     }
   }
 
+  setStatus(status) {
+    this.setState({status});
+  }
+
   getIcon() {
     let icon;
-    if (this.props.type == 'chest') {
+    if (this.props.data.type == 'chest') {
       icon = (
         <ChestCounter
-          count={this.props.count}
+          count={this.props.data.count}
           addListener={this.props.addListener}
-          openAll={this.openAll}
-          closeAny={this.closeAny}
+          setStatus={this.setStatus}
           chestIndex={this.props.keyProp}
           key={this.props.keyProp}
         />
       );
     }
-    if (this.props.type == 'warp') {
+    if (this.props.data.type == 'warp') {
       icon = <Image className="icon" src={`/icons/warp.png`} />;
     }
     return icon;
   }
 
-  render() {
-    const meetsRequirements = this.meetsRequirements(this.props.requires);
-
-    let chestClasses = (meetsRequirements) ? 'chests available' : 'chests unavailable';
-    if (this.state.openedChests.find(c => c == this.props.keyProp)) {
-      chestClasses = 'chests all-open';
-    }
+  getRequirementsPane() {
     return (
-      <div className="loot-row">
-        <div className={chestClasses}>
-          {this.getIcon()}
-        </div>
-        <Requirements
-          requires={this.props.requires}
-          meetsRequirements={this.meetsRequirements}
-          tracker={this.props.tracker}
-        />
+      <Requirements
+        requirements={this.props.data.requires}
+        meetsRequirements={this.meetsRequirements}
+        meetsRequirementsOr={this.meetsRequirementsOr}
+        meetsRequirementsAnd={this.meetsRequirementsAnd}
+        tracker={this.props.tracker}
+      />
+    );
+  }
+
+  render() {
+    const classes = ['nu-loot'];
+    if (this.state.status.length) classes.push(this.state.status);
+    if (this.meetsRequirements(this.props.data.requires)) classes.push('available');
+
+    const icon = this.getIcon();
+    return (
+      <div
+        className={classes.join(' ')}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
+        {icon}
+        {!this.state.hover ? '' : this.getRequirementsPane()}
       </div>
     );
   }
 }
 
-export default LootRow;
+export default Loot;

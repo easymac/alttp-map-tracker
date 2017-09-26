@@ -1,30 +1,52 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import ImageScaleMapType from '../utils/ImageScaleMapType';
 import Overlay from './Overlay';
-import LootMarker from './LootMarker';
+import LootMarker from './markers/LootMarker';
+import DungeonMarker from './markers/DungeonMarker';
+
 import * as actions from '../actions/mapActions';
 
 class OverworldMap extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.google = props.google;
-
     this.state = {
-      overlays: []
+      overlays: [],
+      dungeonOverlays: []
     };
 
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.getProps = this.getProps.bind(this);
+    this.loadImages = this.loadImages.bind(this);
+    this.handleMapIdChange = this.handleMapIdChange.bind(this);
     this.initMap = this.initMap.bind(this);
     this.addMarkers = this.addMarkers.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleMapIdChange = this.handleMapIdChange.bind(this);
+
+    this.google =  props.google;
   }
 
   componentDidMount() {
-    this.initMap(this.props);
+    this.loadImages().then((images) => {
+      this.initMap(images);
+    });
+  }
+
+  loadImage(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.crossOrigin = "Anonymous";
+      img.src = url;
+    });
+  }
+
+  loadImages() {
+    const imgUrl = IMAGE_URL; // eslint-disable-line
+    const lightWorldPromise = this.loadImage(`${imgUrl}lightworld.png`);
+    const darkWorldPromise = this.loadImage(`${imgUrl}darkworld.png`);
+    return Promise.all([lightWorldPromise, darkWorldPromise]);
   }
 
   handleMapIdChange(map) {
@@ -32,47 +54,63 @@ class OverworldMap extends React.Component {
   }
 
   handleClick(e) {
-    // Output coords on click
     console.log(e.latLng.lat().toFixed(4) +', '+ e.latLng.lng().toFixed(4)); // eslint-disable-line
   }
 
-  getProps() {
-    return {
-      tracker: this.props.tracker
-    };
-  }
+  initMap(images) {
 
-  setPanBounds(map) {
-    const allowedBounds = new this.google.maps.LatLngBounds(
-      new this.google.maps.LatLng(-0, -179),
-      new this.google.maps.LatLng(85, 0)
-    );
-
-    this.props.setPanBounds(map, allowedBounds);
-  }
-
-  initMap(props) {
-    const map = this.map = new props.google.maps.Map(document.getElementById('google-map'), {
+    // Initialize the Google map
+    const map = this.map = new this.props.google.maps.Map(document.querySelector('#google-map'), {
       center: {lat: 70, lng: -90},
-      zoom: props.zoomBuffer + 2,
+      zoom: 3,
       streetViewControl: false,
       mapTypeControlOptions: {
         mapTypeIds: ['lightworld', 'darkworld']
       }
     });
 
-    map.addListener('click', this.handleClick);
+    // Set maximum pan area in lat lng
+    const allowedBounds = new this.google.maps.LatLngBounds( // eslint-disable-line
+      new this.google.maps.LatLng(-0, -179),
+      new this.google.maps.LatLng(85, 0)
+    );
+
+    // Add an event listener for when the Map Type changes
     map.addListener('maptypeid_changed', this.handleMapIdChange.bind(this, map));
 
-    const lightWorld = props.createMapType('lightworld', 'Light World', [4, 8, 16, 32]);
-    const darkWorld = props.createMapType('darkworld', 'Dark World', [4, 8, 16, 32]);
+    // Add an event listener for click events
+    map.addListener('click', this.handleClick);
 
-    map.mapTypes.set('lightworld', lightWorld);
-    map.mapTypes.set('darkworld', darkWorld);
+    const lightWorldMapType = this.createMapType('Light World', images[0]);
+    const darkWorldMapType = this.createMapType('Dark World', images[1]);
+    map.mapTypes.set('lightworld', lightWorldMapType);
+    map.mapTypes.set('darkworld', darkWorldMapType);
+
     map.setMapTypeId('lightworld');
 
-    this.setPanBounds(map);
+    // Restrict the pan area (should merge with allowedBounds??)
+    // this.props.setPanBounds(map, allowedBounds);
+
     this.addMarkers();
+    this.addDungeonMarkers();
+  }
+
+  createMapType(name, image, base) {
+    const scaleFactor = {
+      3: 0.25,
+      4: 0.5,
+      5: 1,
+      6: 2
+    };
+    return new ImageScaleMapType(
+      image,
+      base,
+      new google.maps.Size(256, 256), // eslint-disable-line
+      6,
+      3,
+      name,
+      scaleFactor
+    );
   }
 
   addMarkers() {
@@ -95,11 +133,31 @@ class OverworldMap extends React.Component {
     this.setState({overlays});
   }
 
+  addDungeonMarkers() {
+    const dungeonOverlays = this.props.dungeons.map((dungeon, i) => (
+      <Overlay
+        key={i}
+        map={this.map}
+        google={this.props.google}
+        position={new this.props.google.maps.LatLng(...dungeon.coords)}
+      >
+        <DungeonMarker
+          data={dungeon}
+          lootIndex={i}
+          tracker={this.props.tracker}
+          store={this.props.route.store}
+        />
+      </Overlay>
+    ));
+    this.setState({dungeonOverlays});
+  }
+
   render() {
     return (
       <div id="map">
         <div id="google-map" />
         {this.state.overlays}
+        {this.state.dungeonOverlays}
       </div>
     );
   }
@@ -109,6 +167,7 @@ export default connect(
   state => ({
     map: state.map,
     tracker: state.itemTracker,
+    dungeons: state.map.dungeons
   }),
   dispatch => ({actions: bindActionCreators(actions, dispatch)})
 )(OverworldMap);

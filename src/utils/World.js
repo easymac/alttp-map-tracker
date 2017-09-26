@@ -1,5 +1,6 @@
 import LocationCollection from './LocationCollection';
 import * as Regions from '../regions';
+import * as Dungeons from '../regions/dungeons';
 
 import arraysEqual from './ArrayUtils';
 
@@ -15,6 +16,7 @@ export default class World {
     // TODO: implement more logics
     this.logic = 'NoMajorGlitches';
 
+    // Init regions
     this.regions = [
       new Regions.LightWorld(this),
       new Regions.DeathMountain(this),
@@ -35,6 +37,13 @@ export default class World {
       region.init(this.logic);
       this.locations.add(region.locations.getAll());
     });
+
+    // Init dungeons
+    this.dungeons = [
+      new Dungeons.EasternPalace(this),
+    ];
+
+
   }
 
   getRegion(name) {
@@ -86,6 +95,31 @@ export default class World {
       return meta;
     });
 
+    // Sort markers by Y value
+    markers.sort((a, b) => a.coords [1] - b.coords[1]);
+
     return markers;
+  }
+
+  sortRequirements(requirements) {
+
+    const sorted = [...requirements].sort((a, b) => {
+      if (Array.isArray(a) && !Array.isArray(b)) return 1;
+      if (!Array.isArray(a) && Array.isArray(b)) return -1;
+      return 0;
+    });
+    return sorted;
+  }
+
+  getDungeonObjects() {
+    return this.dungeons.map(dungeon => {
+      return {
+        name: dungeon.name,
+        hash: dungeon.hash,
+        coords: dungeon.coords,
+        map: dungeon.map,
+        layer: dungeon.layer,
+      };
+    });
   }
 }

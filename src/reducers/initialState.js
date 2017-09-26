@@ -5,7 +5,8 @@ const world = new World();
 export default {
   map: {
     mapTypeId: 'lightworld',
-    markers: [...world.getLocationsAsLootObjects()]
+    markers: [...world.getLocationsAsLootObjects()],
+    dungeons: [...world.getDungeonObjects()]
   },
   tracker: {
     items: [

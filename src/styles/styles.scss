@@ -3,9 +3,10 @@ $vin-blue: #5bb7db;
 $vin-green: #60b044;
 $vin-red: #ff0000;
 
-* {
-  cursor: default !important;
-}
+/* Useful for precice clickiing for coodinate logging */
+// * {
+//   cursor: default !important;
+// }
 
 /* Styles */
 html, body, #app, #app-component {
@@ -30,6 +31,232 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
+}
+
+#google-map > div {
+  background-color: transparent !important;
+}
+
+.requirements-pane {
+  position: absolute;
+  left: 54px;
+  top: 0;
+
+  background-color: black;
+
+  white-space: nowrap;
+
+  z-index: 1;
+
+  .requirement-and {
+    padding-right: 5px;
+    background-color: black;
+
+    &.available {
+      background-color: black;
+    }
+
+    & + .requirement-and {
+      margin-top: 20px;
+    }
+
+    &:first-of-type {
+      margin-top: 20px;
+    }
+
+    &:last-of-type {
+      margin-bottom: 20px;
+    }
+  }
+
+  .requirement-or {
+    position: relative;
+    margin-left: 30px;
+
+    & > .requirement-and, & > .requirement {
+      border-left: 2px solid white;
+    }
+
+    &::before {
+      content: 'or';
+      text-transform: uppercase;
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      left: -23px;
+      color: white;
+      border-right: 1px solid white;
+    }
+
+    &.available {
+      background-color: black;
+
+      & > .requirement-and, & > .requirement {
+        border-left: 2px solid green;
+      }
+
+      &::before {
+        color: green;
+        border-right: 1px solid green;
+      }
+    }
+  }
+
+  .requirement {
+    display: inline-block;
+    width: 54px;
+    height: 54px;
+    position: relative;
+    background-color: black;
+  }
+
+  .requirement-icon {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+  }
+
+}
+
+.nu-marker {
+  cursor: pointer;
+  width: 54px;
+  position: absolute;
+  left: -27px;
+  bottom: 11px;
+
+  background-color: black;
+  color: black;
+
+  transition: opacity 0.25s, transform 0.25s, background-color 0.25s;
+
+  &:hover {
+    z-index: 1;
+  }
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+  }
+
+  .available {
+    background-color: green;
+    color: green;
+  }
+  .all-open {
+    background-color: gray;
+    color: gray;
+  }
+
+
+  .nu-loot {
+    width: 54px;
+    height: 54px;
+
+    transition: color 0.25s, background-color 0.25s;
+
+    .icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -16px;
+      margin-left: -16px;
+      width: 32px;
+      height: 32px;
+      image-rendering: pixelated;
+
+      &.unequipped {
+          filter: grayscale(100%);
+          opacity: 0.5;
+      }
+    }
+
+    .chest-counter {
+      width: 54px;
+      height: 54px;
+      position: relative;
+
+      .count {
+        top: 0px;
+        left: 3px;
+        position: absolute;
+        pointer-events: none;
+
+        img {
+          height: 7px;
+          width: auto;
+          image-rendering: pixelated;
+        }
+      }
+      .open {
+        bottom: 2px;
+        right: 2px;
+        position: absolute;
+        pointer-events: none;
+
+        img {
+          height: 21px;
+          width: auto;
+          image-rendering: pixelated;
+        }
+      }
+    }
+
+    &:last-of-type::after {
+      transition: border-top 0.25s;
+      position: absolute;
+      bottom: -10px;
+      left: 27px;
+      margin-left: -10px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid currentColor;
+      content: ' ';
+      clear: both;
+    }
+  }
+}
+
+.dungeon-marker {
+  background-color: green;
+  width: 100px;
+  height: 100px;
+  border-radius: 999px;
+  position: relative;
+  transform: translateX(-50%) translateY(-120%) translateY(5px);
+  cursor: pointer;
+
+  color: black;
+  border: 12px solid black;
+  box-sizing: border-box;
+
+  .dungeon-icon {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  &::after {
+    transition: border-top 0.25s;
+    position: absolute;
+    bottom: -27px;
+    left: 50%;
+    margin-left: -20px;
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid currentColor;
+    content: ' ';
+    clear: both;
+  }
 }
 
 .marker {
